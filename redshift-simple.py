@@ -132,11 +132,14 @@ class redshiftSimple(QSystemTrayIcon):
 
     def isRedshift(self):
         """ Check if redshift does exist or not """
-        redshift = str(check_output(['whereis', '-b', 'redshift']))
-        redshift = redshift.split(':')[1][1:]
-        if len(redshift) < 4:
+        try:
+            redshift = str(check_output(['whereis', '-b', 'redshift']))
+            redshift = redshift.split(':')[1][1:]
+            if len(redshift) < 4:
+                return False
+            return True
+        except:
             return False
-        return True
 
 
 if __name__ == '__main__':
