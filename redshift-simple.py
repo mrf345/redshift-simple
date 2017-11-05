@@ -1,8 +1,9 @@
+from __future__ import division
 from subprocess import check_output
 from os import system
 from sys import exit, argv
 from PySide.QtGui import QApplication, QSystemTrayIcon, QIcon, QAction, QMenu
-from PySide.QtGui import QWidget, QDesktopWidget, QMessageBox
+from PySide.QtGui import QWidget, QDesktopWidget, QMessageBox, QFont
 
 
 class Window(QWidget):
@@ -57,20 +58,25 @@ class redshiftSimple(QSystemTrayIcon):
         self.CM = 4000
         if not self.isRedshift():
             parent.redshiftMissing()
+        self.perLabel = QAction(self.getIT(), self)
+        self.perLabel.setFont(QFont("", 12))
+        self.perLabel.setEnabled(False)
         self.setIT(self.CM)
         self.setIcon(QIcon('images/favicon.png'))
-        self.setToolTip("redshift-simple 0.1 - (Right-Click)")
+        self.setToolTip("redshift-simple - (Right-Click)")
         self.onAction = QAction("On", self)
         self.onAction.setEnabled(False)
         self.offAction = QAction("Off", self)
         self.onAction.triggered.connect(self.onToggle)
         self.offAction.triggered.connect(self.onToggle)
         self.increseAction = QAction("Increase", self)
-        self.increseAction.triggered.connect(self.decrese)
+        self.increseAction.triggered.connect(self.increse)
         self.decreseAction = QAction("Decrease", self)
-        self.decreseAction.triggered.connect(self.increse)
+        self.decreseAction.triggered.connect(self.decrese)
         self.exitAction = QAction("Exit", self)
         self.exitAction.triggered.connect(self.exitIT)
+        self.menu.addAction(self.perLabel)
+        self.menu.addSeparator()
         self.menu.addAction(self.onAction)
         self.menu.addAction(self.offAction)
         self.menu.addSeparator()
@@ -103,22 +109,26 @@ class redshiftSimple(QSystemTrayIcon):
 
     def increse(self):
         if self.CM >= 6500:
-            self.CM = 6500
+            self.CM = 5500
         if self.CM <= 1000:
-            self.CM = 1000
+            self.CM = 2000
         self.CM += 1000
         return self.setIT(self.CM)
 
     def decrese(self):
         if self.CM >= 6500:
-            self.CM = 6500
+            self.CM = 5500
         if self.CM <= 1000:
-            self.CM = 1000
+            self.CM = 2000
         self.CM -= 1000
         self.setIT(self.CM)
 
     def setIT(self, value):
+        self.perLabel.setText(self.getIT())
         system("redshift -O " + str(value) + " &> /dev/null")
+
+    def getIT(self):
+        return str(int((self.CM / 6500) * 100)) + "%"
 
     def isRedshift(self):
         """ Check if redshift does exist or not """
