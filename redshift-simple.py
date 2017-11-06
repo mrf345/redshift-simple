@@ -59,7 +59,7 @@ class redshiftSimple(QSystemTrayIcon):
         if not self.isRedshift():
             parent.redshiftMissing()
         self.perLabel = QAction(self.getIT(), self)
-        self.perLabel.setFont(QFont("", 12))
+        self.perLabel.setFont(QFont("", 13))
         self.perLabel.setEnabled(False)
         self.setIT(self.CM)
         self.setIcon(QIcon('images/favicon.png'))
@@ -69,6 +69,7 @@ class redshiftSimple(QSystemTrayIcon):
         self.offAction = QAction("Off", self)
         self.onAction.triggered.connect(self.onToggle)
         self.offAction.triggered.connect(self.onToggle)
+        self.activated.connect(self.toggleP)
         self.increseAction = QAction("Increase", self)
         self.increseAction.triggered.connect(self.increse)
         self.decreseAction = QAction("Decrease", self)
@@ -101,6 +102,10 @@ class redshiftSimple(QSystemTrayIcon):
             self.increseAction.setEnabled(False)
             self.decreseAction.setEnabled(False)
             system("redshift -x &> /dev/null")
+
+    def toggleP(self, ar):
+        if ar != QSystemTrayIcon.ActivationReason.Context:
+            self.onToggle()
 
     def exitIT(self):
         if self.On is not None and self.CM < 6500:
