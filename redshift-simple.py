@@ -63,7 +63,7 @@ class redshiftSimple(QSystemTrayIcon):
         self.perLabel.setEnabled(False)
         self.setIT(self.CM)
         self.setIcon(QIcon('images/favicon.png'))
-        self.setToolTip("redshift-simple - (Right-Click)")
+        self.setToolTip("redshift-simple (Right\Left-Click)")
         self.onAction = QAction("On", self)
         self.onAction.setEnabled(False)
         self.offAction = QAction("Off", self)
