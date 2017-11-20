@@ -22,7 +22,7 @@ class Window(QWidget):
     def exitIT(self, event=None):
         response = self.msgApp(
             "Making sure",
-            "Do youn want to restore screen color to default, before exiting ?")
+            "Do youn want to restore screen color to default, before exiting?")
         if response == 'y':
             system("redshift -x &> /dev/null")
         else:
