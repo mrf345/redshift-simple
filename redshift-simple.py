@@ -1,4 +1,3 @@
-from __future__ import division
 from subprocess import check_output
 from os import system
 from sys import exit, argv
